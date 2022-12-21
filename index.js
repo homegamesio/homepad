@@ -20,8 +20,31 @@ const ting = (buttonState, gamepadMapping, key) => {
 };
 
 const sting = (stickState, gamepadMapping, key) => {
+    
+    const baseValue = stickState[gamepadMapping.sticks[key]];
+
+    if (gamepadMapping.deadzones && gamepadMapping.deadzones[key]) {
+        const keyDeadzone = gamepadMapping.deadzones[key];
+        if (Math.abs(baseValue) < keyDeadzone) {
+            return {
+                value: 0
+            }
+        }
+        if (baseValue < 0) {
+            return {
+                value: (baseValue + keyDeadzone) / (1 - keyDeadzone) 
+            }
+        } else {
+            return {
+                value: (baseValue - keyDeadzone) / (1 - keyDeadzone) 
+            }
+
+        }
+        
+    }
+
     return { 
-        value: stickState[gamepadMapping.sticks[key]]   
+        value: baseValue
     }
 };
 
@@ -52,7 +75,6 @@ const buildStickState = (stickState, gamepadMapping) => {
 }
 
 
-
 class Homepad {
     constructor() {
         if (!window) {
@@ -67,8 +89,10 @@ class Homepad {
     initializeListeners() {
         window.addEventListener('gamepadconnected', (e) => {
             const gamepad = e.gamepad;
-            const gamepadMapping = getGamepadMapping(gamepad.id) || 'UNKNOWN';
-            this.indexToMapping[gamepad.index] = gamepadMapping;
+            const gamepadMapping = getGamepadMapping(gamepad.id);
+            if (gamepadMapping) {
+                this.indexToMapping[gamepad.index] = gamepadMapping;
+            }
         });
         
         window.addEventListener('gamepaddisconnected', (e) => {
@@ -117,5 +141,9 @@ class Homepad {
 //}, 5000);
 
 console.log('dsfdsfdsf the fuick');
-module.exports = Homepad;
+module.exports = {
+    Homepad,
+    Buttons,
+    Sticks
+};
 

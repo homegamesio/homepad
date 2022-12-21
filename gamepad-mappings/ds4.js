@@ -24,5 +24,11 @@ module.exports = {
         'STICK_1_Y': 1,
         'STICK_2_X': 2,
         'STICK_2_Y': 3,
+    },
+    deadzones: {
+        'STICK_1_X': 0.08,
+        'STICK_1_Y': 0.08,
+        'STICK_2_X': 0.08,
+        'STICK_2_Y': 0.08
     }
 }
