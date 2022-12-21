@@ -12,14 +12,14 @@ const getGamepadMapping = (gamepadId) => {
     return null;
 };
 
-const ting = (buttonState, gamepadMapping, key) => {
+const mapButton = (buttonState, gamepadMapping, key) => {
     return { 
         value: buttonState[gamepadMapping.buttons[key]] && buttonState[gamepadMapping.buttons[key]].value, 
         pressed: buttonState[gamepadMapping.buttons[key]] && buttonState[gamepadMapping.buttons[key]].pressed ? true : false
     }
 };
 
-const sting = (stickState, gamepadMapping, key) => {
+const mapStick = (stickState, gamepadMapping, key) => {
     
     const baseValue = stickState[gamepadMapping.sticks[key]];
 
@@ -49,26 +49,20 @@ const sting = (stickState, gamepadMapping, key) => {
 };
 
 const buildButtonState = (buttonState, gamepadMapping) => {
-    // console.log('mmsmsms')
-    // console.log(gamepadMapping.mappings)
-    // console.log(buttonState[0]);//gamepadMapping.mappings['FACE_1']]);
-
     const ret = {};
+
     for (let key in gamepadMapping.buttons) {
-        ret[key] = ting(buttonState, gamepadMapping, key)
+        ret[key] = mapButton(buttonState, gamepadMapping, key)
     }
 
     return ret;
 }
 
 const buildStickState = (stickState, gamepadMapping) => {
-    // console.log('mmsmsms')
-    // console.log(gamepadMapping.mappings)
-    // console.log(buttonState[0]);//gamepadMapping.mappings['FACE_1']]);
-
     const ret = {};
+
     for (let key in gamepadMapping.sticks) {
-        ret[key] = sting(stickState, gamepadMapping, key)
+        ret[key] = mapStick(stickState, gamepadMapping, key)
     }
 
     return ret;
@@ -134,13 +128,6 @@ class Homepad {
     }
 };
 
-//const hp = new Homepad();
-//
-//setInterval(() => {
-//    console.log(hp.getGamepads());
-//}, 5000);
-
-console.log('dsfdsfdsf the fuick');
 module.exports = {
     Homepad,
     Buttons,
